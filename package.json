@@ -1,12 +1,12 @@
 {
   "name": "opspulse",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "dev:web": "npm run dev -w @opspulse/web",
+    "dev:api": "npm run dev -w @opspulse/api"
+  }
 }
