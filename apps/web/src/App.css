@@ -195,3 +195,11 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.refresh-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
