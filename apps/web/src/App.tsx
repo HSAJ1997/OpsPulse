@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import StatusCard from './components/StatusCard';
 
 type ApiHealth = {
   status: string;
@@ -42,12 +43,11 @@ function App() {
       {!error && !health && <p>Checking backend...</p>}
 
       {health && (
-        <div>
-          <p>Backend online 🟢</p>
-          <p>Service: {health.service}</p>
-          <p>Status: {health.status}</p>
-          <p>Last checked: {health.timestamp}</p>
-        </div>
+        <StatusCard
+          service={health.service}
+          status={health.status}
+          timestamp={health.timestamp}
+        />
       )}
     </main>
   );
