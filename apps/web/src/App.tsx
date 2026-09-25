@@ -2,59 +2,65 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import StatusCard from './components/StatusCard';
 
-type ApiHealth = {
+type Service = {
+  name: string;
+  url: string;
   status: string;
-  service: string;
-  timestamp: string;
+  responseTime: number | null;
 };
 
 function App() {
-  const [health, setHealth] = useState<ApiHealth | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
   const [error, setError] = useState(false);
 
-  async function checkApi() {
+  async function checkServices() {
     try {
       setError(false);
 
-      const response = await fetch('http://localhost:3001/health');
+      const response = await fetch('http://localhost:3001/services');
 
       if (!response.ok) {
         throw new Error('API request failed');
       }
 
-      const data: ApiHealth = await response.json();
+      const data: Service[] = await response.json();
 
-      setHealth(data);
+      setServices(data);
     } catch {
       setError(true);
     }
   }
 
   useEffect(() => {
-    checkApi();
+    checkServices();
   }, []);
 
   return (
     <main>
       <h1>OpsPulse</h1>
       <p>Service monitoring and incident intelligence.</p>
-      <h2>Backend Status</h2>
 
-      <button className="refresh-button" onClick={checkApi}>
-        Refresh Status
+      <h2>Service Status</h2>
+
+      <button onClick={checkServices}>
+        Refresh Services
       </button>
 
-      {error && <p>Backend offline 🔴</p>}
+      {error && <p>Unable to connect to OpsPulse API 🔴</p>}
 
-      {!error && !health && <p>Checking backend...</p>}
-
-      {health && (
-        <StatusCard
-          service={health.service}
-          status={health.status}
-          timestamp={health.timestamp}
-        />
+      {!error && services.length === 0 && (
+        <p>Checking services...</p>
       )}
+
+      {services.map((service) => (
+        <StatusCard
+          key={service.url}
+          name={service.name}
+          url={service.url}
+          status={service.status}
+          responseTime={service.responseTime}
+        />
+      ))}
     </main>
   );
 }

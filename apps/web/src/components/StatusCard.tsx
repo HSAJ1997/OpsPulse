@@ -1,19 +1,28 @@
 type StatusCardProps = {
-  service: string;
+  name: string;
+  url: string;
   status: string;
-  timestamp: string;
+  responseTime: number | null;
 };
 
 function StatusCard({
-  service,
+  name,
+  url,
   status,
-  timestamp,
+  responseTime,
 }: StatusCardProps) {
   return (
     <div className="status-card">
-      <h3>{service}</h3>
-      <p>Status: {status}</p>
-      <p>Last checked: {timestamp}</p>
+      <h3>{name}</h3>
+
+      <p>{status === 'online' ? '🟢 Online' : '🔴 Offline'}</p>
+
+      <p>{url}</p>
+
+      <p>
+        Response time:{' '}
+        {responseTime !== null ? `${responseTime} ms` : 'Unavailable'}
+      </p>
     </div>
   );
 }
